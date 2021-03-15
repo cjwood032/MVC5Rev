@@ -5,6 +5,12 @@
 }
 
 <h2>Products</h2>
+<a href="/products/create" class="btn btn-sm btn-success">New Product</a>
+<form class="form-inline" action="/products/index">
+    <label for="search">Search:</label>
+    <input type="search" class="form-control" id="search" name="search" value="@ViewBag.search" />
+    <button type="submit" class="btn btn-outline-primary">GO</button>
+</form>
 <table class="table">
     <tr>
         <th>Product ID</th>
@@ -20,7 +26,7 @@
     @foreach (var product in Model)
     {
 <tr>
-    <td>@product.ProductID</td>
+    <td><a href="/products/details/@product.ProductID">@product.ProductID Details</a></td>
     <td>@product.ProductName</td>
     <td>@product.Price</td>
     <td>@product.DateOfPurchase</td>
