@@ -52,16 +52,24 @@
         <div class="form-group">
             @Html.LabelFor(model => model.CategoryID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CategoryID, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(m => m.CategoryID,
+       Model.Categories.Select(d => new SelectListItem()
+                                         {
+                                             Value = d.CategoryID.ToString(),
+                                             Text = d.CategoryName
+                                         }),  new { @class = "form-control" } )
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.BrandID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.BrandID, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.BrandID, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(m => m.BrandID,
+          Model.Brands.Select(d => new SelectListItem()
+                                            {
+                                                Value = d.BrandID.ToString(),
+                                                Text = d.BrandName
+                                            }), new { @class = "form-control" })
             </div>
         </div>
 

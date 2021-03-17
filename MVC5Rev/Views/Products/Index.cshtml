@@ -18,8 +18,8 @@
         <th>Price</th>
         <th>Date of Purchase</th>
         <th>Availability Status</th>
-        <th>CategoryID</th>
-        <th>BrandID</th>
+        <th>Category</th>
+        <th>Brand</th>
         <th>Active status</th>
     </tr>
 
@@ -32,8 +32,8 @@
     <td>@product.Price</td>
     <td>@product.DateOfPurchase</td>
     <td>@product.AvailabilityStatus</td>
-    <td>@product.CategoryID</td>
-    <td>@product.BrandID</td>
+    <td>@(product.Category!=null ? product.Category.CategoryName: "None")</td>
+    <td>@(product.Brand!=null ? product.Brand.BrandName: "None")</td>
     <td>@product.Active</td>
 </tr>
     }

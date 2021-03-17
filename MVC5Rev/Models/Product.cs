@@ -25,5 +25,7 @@ namespace MVC5Rev.Models
     
         public virtual Brand Brand { get; set; }
         public virtual Category Category { get; set; }
+        public IEnumerable<Category> Categories { get; set; }
+        public IEnumerable<Brand> Brands { get; set; }
     }
 }

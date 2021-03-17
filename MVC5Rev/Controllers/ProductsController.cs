@@ -39,6 +39,8 @@ namespace MVC5Rev.Controllers
         {
             EFDBFirstDatabaseEntities db = new EFDBFirstDatabaseEntities();
             Product product = db.Products.Where(p => p.ProductID == id).FirstOrDefault();
+            product.Categories = db.Categories.ToList();
+            product.Brands = db.Brands.ToList();
             return View(product);
         }
         [HttpPost]
