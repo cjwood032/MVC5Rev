@@ -10,7 +10,7 @@ namespace MVC5Rev.Controllers
     public class ProductsController : Controller
     {
         // GET: Products
-        public ActionResult Index(string search = "", string SortColumn = "ProductName", string IconClass = "fa-sort-asc")
+        public ActionResult Index(string search = "", string SortColumn = "ProductName", string IconClass = "fa-sort-asc", int PageNo=1)
         {
             EFDBFirstDatabaseEntities db = new EFDBFirstDatabaseEntities();
             ViewBag.search = search;
@@ -68,7 +68,12 @@ namespace MVC5Rev.Controllers
                 else
                     products = products.OrderByDescending(temp => temp.Brand.BrandName).ToList();
             }
-
+            int noOfRecordsPerPage = 5;
+            int noOfPages = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(products.Count) / Convert.ToDouble(noOfRecordsPerPage)));
+            int noOfRecordsToSkip = (PageNo - 1) * noOfRecordsPerPage;
+            ViewBag.PageNo = PageNo;
+            ViewBag.noOfPages = noOfPages;
+            products = products.Skip(noOfRecordsToSkip).Take(noOfRecordsPerPage).ToList();
             return View(products);
         }
         public ActionResult Details( long id)
