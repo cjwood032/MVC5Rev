@@ -8,10 +8,10 @@ namespace MVC5Rev.Controllers
 {
     public class BrandsController : Controller
     {
+        CompanyDbContext db = new CompanyDbContext();
         // GET: Brands
         public ActionResult Index()
         {
-            EFDBFirstDatabaseEntities db = new EFDBFirstDatabaseEntities();
             List<Brand> brands = db.Brands.ToList();
             return View(brands);
         }

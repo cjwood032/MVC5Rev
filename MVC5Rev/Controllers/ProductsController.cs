@@ -9,10 +9,10 @@ namespace MVC5Rev.Controllers
 {
     public class ProductsController : Controller
     {
+        CompanyDbContext db = new CompanyDbContext();
         // GET: Products
         public ActionResult Index(string search = "", string SortColumn = "ProductName", string IconClass = "fa-sort-asc", int PageNo=1)
         {
-            EFDBFirstDatabaseEntities db = new EFDBFirstDatabaseEntities();
             ViewBag.search = search;
             List<Product> products = db.Products.Where(temp => temp.ProductName.Contains(search)).ToList();
 
@@ -78,13 +78,11 @@ namespace MVC5Rev.Controllers
         }
         public ActionResult Details( long id)
         {
-            EFDBFirstDatabaseEntities db = new EFDBFirstDatabaseEntities();
             Product product = db.Products.Where(p => p.ProductID == id).FirstOrDefault();
             return View(product);
         }
         public ActionResult Create()
         {
-            EFDBFirstDatabaseEntities db = new EFDBFirstDatabaseEntities();
             ViewBag.Categories = db.Categories.ToList();
             ViewBag.Brands = db.Brands.ToList();
             return View();
@@ -92,7 +90,6 @@ namespace MVC5Rev.Controllers
         [HttpPost]
         public ActionResult Create(Product product)
         {
-            EFDBFirstDatabaseEntities db = new EFDBFirstDatabaseEntities();
             if (Request.Files.Count >= 1)
             {
                 var file = Request.Files[0];
@@ -107,7 +104,6 @@ namespace MVC5Rev.Controllers
         }
         public ActionResult Edit(long id)
         {
-            EFDBFirstDatabaseEntities db = new EFDBFirstDatabaseEntities();
             Product product = db.Products.Where(p => p.ProductID == id).FirstOrDefault();
             
             product.Categories = db.Categories.ToList();
@@ -117,7 +113,6 @@ namespace MVC5Rev.Controllers
         [HttpPost]
         public ActionResult Edit(Product product)
         {
-            EFDBFirstDatabaseEntities db = new EFDBFirstDatabaseEntities();
             Product foundProduct = db.Products.Where(p => p.ProductID == product.ProductID).FirstOrDefault();
             foundProduct.ProductName = product.ProductName;
             foundProduct.Price = product.Price;
@@ -133,7 +128,6 @@ namespace MVC5Rev.Controllers
         [HttpPost]
         public ActionResult Delete(Product product)
         {
-            EFDBFirstDatabaseEntities db = new EFDBFirstDatabaseEntities();
             Product foundProduct = db.Products.Where(p => p.ProductID == product.ProductID).FirstOrDefault();
             db.Products.Remove(foundProduct);
             db.SaveChanges();

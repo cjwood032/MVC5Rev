@@ -9,10 +9,10 @@ namespace MVC5Rev.Controllers
 {
     public class CategoriesController : Controller
     {
+        CompanyDbContext db = new CompanyDbContext();
         // GET: Categories
         public ActionResult Index()
         {
-            EFDBFirstDatabaseEntities db = new EFDBFirstDatabaseEntities();
             List<Category> categories = db.Categories.ToList();
             return View(categories);
         }
