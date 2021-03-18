@@ -84,12 +84,23 @@ namespace MVC5Rev.Controllers
         }
         public ActionResult Create()
         {
+            EFDBFirstDatabaseEntities db = new EFDBFirstDatabaseEntities();
+            ViewBag.Categories = db.Categories.ToList();
+            ViewBag.Brands = db.Brands.ToList();
             return View();
         }
         [HttpPost]
         public ActionResult Create(Product product)
         {
             EFDBFirstDatabaseEntities db = new EFDBFirstDatabaseEntities();
+            if (Request.Files.Count >= 1)
+            {
+                var file = Request.Files[0];
+                var imgBytes = new Byte[file.ContentLength];
+                file.InputStream.Read(imgBytes, 0, file.ContentLength);
+                var base64String = Convert.ToBase64String(imgBytes, 0, imgBytes.Length);
+                product.Photo = base64String;
+            }
             db.Products.Add(product);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -98,6 +109,7 @@ namespace MVC5Rev.Controllers
         {
             EFDBFirstDatabaseEntities db = new EFDBFirstDatabaseEntities();
             Product product = db.Products.Where(p => p.ProductID == id).FirstOrDefault();
+            
             product.Categories = db.Categories.ToList();
             product.Brands = db.Brands.ToList();
             return View(product);
@@ -114,8 +126,8 @@ namespace MVC5Rev.Controllers
             foundProduct.CategoryID = product.CategoryID;
             foundProduct.BrandID = product.BrandID;
             foundProduct.Active = product.Active;
-
-            db.SaveChanges();
+            
+           db.SaveChanges();
             return RedirectToAction("Index");
         }
         [HttpPost]
