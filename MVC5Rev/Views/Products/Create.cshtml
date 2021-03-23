@@ -1,4 +1,5 @@
 ﻿@model MVC5Rev.Models.Product
+@using MVC5Rev.CustomHelpers
 @{
     ViewBag.Title = "Create Product";
     Layout = "~/Views/Shared/_LayoutPage1.cshtml";
@@ -12,46 +13,51 @@
     <div class="form-row">
         <div class="form-group col-md-6">
             @Html.LabelFor(prod => prod.ProductName)
-            @Html.TextBoxFor(prod=>prod.ProductName, new { placeholder= "Product Name",  @class = "form-control"  })
+            @Html.TextBoxFor(prod => prod.ProductName, new { placeholder = "Product Name", @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
         </div>
         <div class="form-group col-md-6">
             @Html.LabelFor(prod => prod.Price)
-            @Html.TextBoxFor(prod => prod.Price, new { placeholder = "Price", @class = "form-control"  })
+            @Html.TextBoxFor(prod => prod.Price, new { placeholder = "Price", @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-row">
         <div class="form-group col-md-6">
             @Html.LabelFor(prod => prod.DateOfPurchase)
-            @Html.TextBoxFor(prod => prod.DateOfPurchase, new { placeholder = "Date Of Purchase", @class = "form-control"  })
+            @Html.TextBoxFor(prod => prod.DateOfPurchase, new { placeholder = "Date Of Purchase", @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.DateOfPurchase, "", new { @class = "text-danger" })
         </div>
         <div class="form-group col-md-6">
             @Html.LabelFor(prod => prod.AvailabilityStatus)
             @Html.DropDownListFor(prod => prod.AvailabilityStatus, new List<SelectListItem>(){
            new SelectListItem(){Text="In Stock", Value="InStock"},
            new SelectListItem(){Text="Out of Stock", Value="OutOfStock"} },
-          "Please Select" , new{ @class = "form-control" })
-
+          "Please Select", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.AvailabilityStatus, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-row">
         <div class="form-group col-md-6">
             @Html.LabelFor(prod => prod.CategoryID)
-            @Html.DropDownListFor(prod => prod.CategoryID, new SelectList(ViewBag.Categories, "CategoryID","CategoryName"), "Please Select", new { @class = "form-control" })
+            @Html.DropDownListFor(prod => prod.CategoryID, new SelectList(ViewBag.Categories, "CategoryID", "CategoryName"), "Please Select", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })
         </div>
         <div class="form-group col-md-6">
             @Html.LabelFor(prod => prod.BrandID)
             @Html.DropDownListFor(prod => prod.BrandID, new SelectList(ViewBag.Brands, "BrandID", "BrandName"), "Please Select", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.BrandID, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group">
-        <label for="Image">Image</label>
-        <input type="file" class="form-control-file" id="Image" name="Photo" />
+        @Html.LabelFor(prod => prod.Photo)
+        @Html.File("form-control-file")
+        @Html.ValidationMessageFor(model => model.Photo, "", new { @class = "text-danger" })
     </div>
     <div class="form-group">
         <div class="form-check">
             @Html.CheckBoxFor(prod=>prod.Active.Value, new { @class = "form-check-input",value="true" })
             @Html.LabelFor(prod => prod.Active, new { @class = "form-check-label" })
-
         </div>
     </div>
 

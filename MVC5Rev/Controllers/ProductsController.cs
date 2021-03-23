@@ -11,7 +11,7 @@ namespace MVC5Rev.Controllers
     {
         CompanyDbContext db = new CompanyDbContext();
         // GET: Products
-        public ActionResult Index(string search = "", string SortColumn = "ProductName", string IconClass = "fa-sort-asc", int PageNo=1)
+        public ActionResult Index(string search = "", string SortColumn = "ProductName", string IconClass = "fa-sort-asc", int PageNo = 1)
         {
             ViewBag.search = search;
             List<Product> products = db.Products.Where(temp => temp.ProductName.Contains(search)).ToList();
@@ -76,7 +76,7 @@ namespace MVC5Rev.Controllers
             products = products.Skip(noOfRecordsToSkip).Take(noOfRecordsPerPage).ToList();
             return View(products);
         }
-        public ActionResult Details( long id)
+        public ActionResult Details(long id)
         {
             Product product = db.Products.Where(p => p.ProductID == id).FirstOrDefault();
             return View(product);
@@ -88,42 +88,67 @@ namespace MVC5Rev.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Create(Product product)
+        public ActionResult Create([Bind(Include = "ProductName,Price,DateOfPurchase,AvailabilityStatus,CategoryID,BrandID,Active,Photo")] Product product)
         {
-            if (Request.Files.Count >= 1)
+            if (ModelState.IsValid)
             {
-                var file = Request.Files[0];
-                var imgBytes = new Byte[file.ContentLength];
-                file.InputStream.Read(imgBytes, 0, file.ContentLength);
-                var base64String = Convert.ToBase64String(imgBytes, 0, imgBytes.Length);
-                product.Photo = base64String;
+                if (Request.Files.Count >= 1)
+                {
+                    var file = Request.Files[0];
+                    var imgBytes = new Byte[file.ContentLength];
+                    file.InputStream.Read(imgBytes, 0, file.ContentLength);
+                    var base64String = Convert.ToBase64String(imgBytes, 0, imgBytes.Length);
+                    product.Photo = base64String;
+                }
+                db.Products.Add(product);
+                db.SaveChanges();
+                return RedirectToAction("Index");
             }
-            db.Products.Add(product);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            else
+            {
+                ViewBag.Categories = db.Categories.ToList();
+                ViewBag.Brands = db.Brands.ToList();
+                return View();
+            }
         }
         public ActionResult Edit(long id)
         {
             Product product = db.Products.Where(p => p.ProductID == id).FirstOrDefault();
-            
+
             product.Categories = db.Categories.ToList();
             product.Brands = db.Brands.ToList();
             return View(product);
         }
         [HttpPost]
-        public ActionResult Edit(Product product)
+        public ActionResult Edit([Bind(Include = "ProductName,Price,DateOfPurchase,AvailabilityStatus,CategoryID,BrandID,Active,Photo")] Product product)
         {
-            Product foundProduct = db.Products.Where(p => p.ProductID == product.ProductID).FirstOrDefault();
-            foundProduct.ProductName = product.ProductName;
-            foundProduct.Price = product.Price;
-            foundProduct.DateOfPurchase = product.DateOfPurchase;
-            foundProduct.AvailabilityStatus = product.AvailabilityStatus;
-            foundProduct.CategoryID = product.CategoryID;
-            foundProduct.BrandID = product.BrandID;
-            foundProduct.Active = product.Active;
-            
-           db.SaveChanges();
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                Product foundProduct = db.Products.Where(p => p.ProductID == product.ProductID).FirstOrDefault();
+                foundProduct.ProductName = product.ProductName;
+                foundProduct.Price = product.Price;
+                foundProduct.DateOfPurchase = product.DateOfPurchase;
+                foundProduct.AvailabilityStatus = product.AvailabilityStatus;
+                foundProduct.CategoryID = product.CategoryID;
+                foundProduct.BrandID = product.BrandID;
+                foundProduct.Active = product.Active;
+                if (Request.Files.Count >= 1)
+                {
+                    var file = Request.Files[0];
+                    var imgBytes = new Byte[file.ContentLength];
+                    file.InputStream.Read(imgBytes, 0, file.ContentLength);
+                    var base64String = Convert.ToBase64String(imgBytes, 0, imgBytes.Length);
+                    foundProduct.Photo = base64String;
+                }
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                product.Categories = db.Categories.ToList();
+                product.Brands = db.Brands.ToList();
+                return View(product);
+            }
         }
         [HttpPost]
         public ActionResult Delete(Product product)

@@ -1,5 +1,5 @@
 ﻿@model MVC5Rev.Models.Product
-
+@using MVC5Rev.CustomHelpers
 @{
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_LayoutPage1.cshtml";
@@ -72,7 +72,10 @@
                                             }), new { @class = "form-control" })
             </div>
         </div>
-        
+        <div class="form-group">
+            @Html.LabelFor(prod => prod.Photo)
+            @Html.File("form-control-file")
+        </div>
         <div class="form-group">
             @Html.LabelFor(model => model.Active, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
