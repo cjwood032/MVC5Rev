@@ -17,36 +17,43 @@
 </form>
 <table class="table">
     <tr>
-        <th>Product ID</th>
-        <td>@Model.ProductID</td>
+        <th>@Html.LabelFor(p => Model.ProductID)</th>
+        <td>@Html.DisplayFor(p => Model.ProductID)</td>
     </tr>
     <tr>
-        <th>Product Name</th>
-        <td>@Model.ProductName</td>
+        <th>@Html.LabelFor(p => Model.ProductName)</th>
+        <td>@Html.DisplayFor(p => Model.ProductName)</td>
     </tr>
     <tr>
-        <th>Price</th>
-        <td>@Model.Price</td>
+        <th>@Html.LabelFor(p => Model.Price)</th>
+        <td>@Html.DisplayFor(p => Model.Price)</td>
     </tr>
     <tr>
-        <th>Date of Purchase</th>
-        <td>@Model.DateOfPurchase</td>
+        <th>@Html.LabelFor(p => Model.DateOfPurchase)</th>
+        <td>@Html.DisplayFor(p => Model.DateOfPurchase)</td>
     </tr>
     <tr>
-        <th>Availability Status</th>
-        <td>@Model.AvailabilityStatus</td>
+        <th>@Html.LabelFor(p => Model.AvailabilityStatus)</th>
+        <td>@Html.DisplayFor(p => Model.AvailabilityStatus)</td>
     </tr>
     <tr>
-        <th>CategoryID</th>
-        <td>@Model.CategoryID</td>
+        <th>@Html.LabelFor(p => Model.CategoryID)</th>
+        <td>@Html.DisplayFor(p => Model.CategoryID)</td>
     </tr>
     <tr>
         <th>BrandID</th>
         <td>@Model.BrandID</td>
     </tr>
     <tr>
-        <th>Active status</th>
-        <td>@Model.Active</td>
+        <th>@Html.LabelFor(p => Model.Active)</th>
+        @if (Model.Active.HasValue)
+        {
+            <td>@Html.DisplayFor(p => Model.Active.Value)</td>
+}
+        else
+        {
+            <td>@Html.DisplayFor(p => Model.Active.HasValue)</td>
+        }
     </tr>
 </table>
 <a href="/products/index">Back to product list</a>
