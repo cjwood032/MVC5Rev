@@ -61,6 +61,12 @@ namespace MVC5Rev
                     userManager.AddToRole(mgrUser.Id, "Manager");
                 }
             }
+            if(!roleManager.RoleExists("Customer"))
+            {
+                var role = new IdentityRole();
+                role.Name = "Customer";
+                roleManager.Create(role);
+            }
         }
     }
 }

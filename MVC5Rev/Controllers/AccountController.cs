@@ -30,7 +30,7 @@ namespace MVC5Rev.Controllers
                 var userStore = new ApplicationUserStore(appDbContext);
                 var userManager = new ApplicationUserManager(userStore);
                 var passwordHash = Crypto.HashPassword(rvm.Password);
-                var user = new ApplicationUser() { Email = rvm.Email, UserName = rvm.Username, PasswordHash = rvm.Password, City = rvm.City, Address = rvm.Address, Country = rvm.Country, PhoneNumber = rvm.Mobile };
+                var user = new ApplicationUser() { Email = rvm.Email, UserName = rvm.Username, PasswordHash = passwordHash, City = rvm.City, Address = rvm.Address, Country = rvm.Country, PhoneNumber = rvm.Mobile };
                 IdentityResult result = userManager.Create(user);
                 if (result.Succeeded)
                 {
@@ -46,6 +46,36 @@ namespace MVC5Rev.Controllers
                 ModelState.AddModelError("MyError", "Invalid data");
                 return View();
             }
+        }
+        public ActionResult Login()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Login(LoginViewModel lvm)
+        {
+            var appDbContext = new ApplicationDbContext();
+            var userStore = new ApplicationUserStore(appDbContext);
+            var userManager = new ApplicationUserManager(userStore);
+            var user = userManager.Find(lvm.Username, lvm.Password);
+            if(user!=null)
+            {
+                var authenticationManager = HttpContext.GetOwinContext().Authentication;
+                var userIdentity = userManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
+                authenticationManager.SignIn(new AuthenticationProperties(), userIdentity);
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ModelState.AddModelError("MyError", "Invalid username or password");
+                return View();
+            }
+        }
+        public ActionResult Logout()
+        {
+            var authenticationManager = HttpContext.GetOwinContext().Authentication;
+            authenticationManager.SignOut();
+            return RedirectToAction("Index", "Home");
         }
     }
 }
